@@ -4,12 +4,12 @@ let router = express.Router();
 let mongoose = require('mongoose');
 
 // define the game model
-let book = require('../models/books');
+let book = require('../models/artworks');
 
 /* GET home page. wildcard */
 router.get('/', (req, res, next) => {
   res.render('content/index', {
-    title: 'Home',
+    title: 'Art Gallery Home',
     books: ''
    });
 });

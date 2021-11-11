@@ -1,7 +1,6 @@
 /*******************
- * Evan Li (books.js)
+ * Evan Li (artworks.js)
  * 301139281
- * Web app: evanlimidterm.herokuapp.com
  **********************/
 let express = require('express');
 let router = express.Router();
@@ -9,17 +8,17 @@ let mongoose = require('mongoose');
 
 
 
-let book = require('../models/books');
+let artwork = require('../models/artworks');
 
 router.get('/', (req, res, next) => {
     // find all books in the books collection
-    book.find( (err, books) => {
+    artwork.find( (err, books) => {
       if (err) {
         return console.error(err);
       }
       else {
         res.render('books/index', {
-          title: 'Books',
+          title: 'Art Gallery',
           books: books
         });
       }
@@ -31,7 +30,7 @@ router.get('/', (req, res, next) => {
     // find all books in the books collection
    
         res.render('books/details', {
-          title: 'Add a book',
+          title: 'Add a artwork',
           books: ''
          
         });
@@ -43,15 +42,15 @@ router.get('/', (req, res, next) => {
   router.post('/add', (req, res, next) => {
 
   
-     let newBook = book({
+     let newArtwork = artwork({
       "Title": req.body.title,
-      "Price": req.body.price,
-      "Author": req.body.author,
-      "Genre": req.body.genre
+      "Year": req.body.year,
+      "Artist": req.body.artist,
+      "Style": req.body.style
      
   });
 
-  book.create(newBook, (err, book) =>{
+  artwork.create(newArtwork, (err, artwork) =>{
       if(err)
       {
           console.log(err);
@@ -59,14 +58,14 @@ router.get('/', (req, res, next) => {
       }
       else
       {
-          // refresh the book list
-          res.redirect('/books');
+          // refresh the artwork list
+          res.redirect('/artgallery');
       }
   });
 
 });
 
-// GET the Book Details page in order to edit an existing Book
+// GET the Artwork Details page in order to edit an existing Artwork
 router.get('/edit/:id', (req, res, next) => {
 
       
@@ -74,7 +73,7 @@ router.get('/edit/:id', (req, res, next) => {
      let id = req.params.id;
 
 
-      book.findById(id, (err, bookToEdit) => {
+      artwork.findById(id, (err, artworkToEdit) => {
         if(err)
         {
             console.log(err);
@@ -83,7 +82,7 @@ router.get('/edit/:id', (req, res, next) => {
         else
         {
             //show the edit view
-            res.render('books/details', {title: 'Edit Book', books: bookToEdit
+            res.render('books/details', {title: 'Edit Artwork', books: artworkToEdit
             })
         }
     });
@@ -97,15 +96,15 @@ router.post('/edit/:id', (req, res, next) => {
   
      let id = req.params.id;
 
-     let updatedBook = book({
+     let updatedArtwork = artwork({
          "_id": id,
          "Title": req.body.title,
-         "Price": req.body.price,
-         "Author": req.body.author,
-         "Genre": req.body.genre
+         "Year": req.body.year,
+         "Artist": req.body.artist,
+         "Style": req.body.style
          
      });
-     book.updateOne({_id: id}, updatedBook, (err) => {
+     artwork.updateOne({_id: id}, updatedArtwork, (err) => {
         if(err)
         {
             console.log(err);
@@ -113,8 +112,8 @@ router.post('/edit/:id', (req, res, next) => {
         }
         else
         {
-            // refresh the book list
-            res.redirect('/books');
+            // refresh the artwork list
+            res.redirect('/artgallery');
         }
     });
 
@@ -125,7 +124,7 @@ router.get('/delete/:id', (req, res, next) => {
 
     let id = req.params.id;
 
-    book.remove({_id: id}, (err) => {
+    artwork.remove({_id: id}, (err) => {
         if(err)
         {
             console.log(err);
@@ -133,8 +132,8 @@ router.get('/delete/:id', (req, res, next) => {
         }
         else
         {
-             // refresh the book list
-             res.redirect('/books');
+             // refresh the artwork list
+             res.redirect('/artgallery');
         }
     });
 });
